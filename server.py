@@ -2,12 +2,15 @@
 
 Run:  python server.py          (stdio transport, for Agent Studio / MCP clients)
 """
-from __future__ import annotations
+import sys
+sys.stderr.flush()
 
 from mcp.server.mcpserver import MCPServer
 
 from dotenv import load_dotenv
 
+import os, sys
+import json, sys
 from src.woo_client import WooClient, WooError
 
 
@@ -33,11 +36,11 @@ def _safe(fn):
         return {"error": e.code, "message": str(e), "status": e.status}
 
 
+
 @mcp.tool()
 def test_connection() -> dict:
-    """Check that the store URL and API credentials work. Returns total order count."""
+    """Check that the store is reachable and the credentials work; returns ok and total_orders."""
     return _safe(lambda: client().test_connection())
-
 
 @mcp.tool()
 def list_orders(

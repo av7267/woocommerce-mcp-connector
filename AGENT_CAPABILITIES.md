@@ -4,9 +4,9 @@
 
 | Capability | Description |
 |------------|-------------|
-| **List Orders** | Retrieve a paginated list of orders. Supports optional filtering by `status`, `after`, `before`, and `customer`. Returns a compact representation that masks PII by default. |
-| **Get Order** | Fetch a single order by its numeric ID. Returns the same slim representation with masked PII. |
-| **Search Orders** | Perform a free‑text search against the WooCommerce `orders` endpoint. The query string is trimmed and must be non‑empty. |
+| **List Orders** | Retrieve a paginated list of orders. Supports optional filtering by `status`, `after`, `before`, and `customer_id`. Returns a compact representation that masks PII by default. |
+| **Get Order** | Fetch a single order by its numeric ID, including line items and status. PII is masked. |
+| **Search Orders** | Free-text search matching order number, customer name, customer email, or product title. The query must be non-empty. |
 | **Test Connection** | Verify that the store is reachable and return the total number of orders in the store. |
 | **Pagination** | Both `list_orders` and `search_orders` expose `page`, `per_page`, `has_more`, and `total_pages` fields so the agent can iterate through large result sets. |
 | **Rate‑Limit Handling** | The client automatically retries on HTTP 429 (rate‑limited) and 5xx responses using exponential back‑off and respects `Retry‑After` headers. |
