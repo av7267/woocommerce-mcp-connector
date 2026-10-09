@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "WooCommerce Read-Only MCP Tool Specification",
+  "description": "MCP tool specification for the WooCommerce Agent Studio private connector.",
+  "tools": [
+    {
+      "name": "test_connection",
+      "description": "Check that the WooCommerce store URL and REST API credentials work. Returns connectivity status and total order count.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "ok": { "type": "boolean" },
+          "total_orders": { "type": "integer" }
+        }
+      }
+    },
+    {
+      "name": "list_orders",
+      "description": "List orders with newest orders first. Supports filtering by status, date range, or customer ID, with pagination metadata.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": ["string", "null"],
+            "description": "Filter by order status: pending, processing, on-hold, completed, cancelled, refunded, failed.",
+            "default": null
+          },
+          "after": {
+            "type": ["string", "null"],
+            "description": "ISO 8601 datetime to filter orders created after this timestamp (e.g. 2026-10-01T00:00:00).",
+            "default": null
+          },
+          "before": {
+            "type": ["string", "null"],
+            "description": "ISO 8601 datetime to filter orders created before this timestamp.",
+            "default": null
+          },
+          "customer_id": {
+            "type": ["integer", "null"],
+            "description": "Filter orders by customer ID.",
+            "default": null
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number (1-based).",
+            "default": 1,
+            "minimum": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of orders to retrieve per page (1-100).",
+            "default": 20,
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "get_order",
+      "description": "Retrieve details of a single order by its numeric ID, including line items and status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "order_id": {
+            "type": "integer",
+            "description": "The unique numeric ID of the WooCommerce order."
+          }
+        },
+        "required": ["order_id"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "search_orders",
+      "description": "Search orders by free text matching against order number, customer name, customer email, or product title.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Non-empty search query string."
+          },
+          "page": {
+            "type": "integer",
+            "description": "Page number (1-based).",
+            "default": 1,
+            "minimum": 1
+          },
+          "per_page": {
+            "type": "integer",
+            "description": "Number of orders to retrieve per page (1-100).",
+            "default": 20,
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": ["query"],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "error_codes": {
+    "auth_failed": "HTTP 401/403: Invalid credentials or insufficient permissions.",
+    "not_found": "HTTP 404: The requested order or resource was not found.",
+    "rate_limited": "HTTP 429: Rate limit exceeded and max backoff retries exhausted.",
+    "unavailable": "HTTP 5xx or connection/timeout error persisting after retries.",
+    "woo_error": "Unexpected WooCommerce API or client error."
+  }
+}
