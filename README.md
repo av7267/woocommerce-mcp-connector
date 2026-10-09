@@ -49,7 +49,7 @@ This connector allows an AI Agent to inspect and search merchant orders, check c
 ## Setup and Installation
 
 ### 1. Prerequisites
-- Python 3.10+
+- Python 3.10+ (tested on 3.14)
 - A WooCommerce store (cloud or local Docker) with REST API enabled.
 - WooCommerce REST API credentials (Consumer Key and Consumer Secret) generated with **Read** permissions.
 
@@ -159,3 +159,5 @@ This launches the MCP server in a subprocess, initializes the MCP session over s
 2. **Page Size Cap**: WooCommerce limits `per_page` to a maximum of 100. Requests requesting more than 100 will be capped at 100.
 3. **No Raw Customer PII**: Full customer street addresses and phone numbers are excluded to preserve customer privacy.
 4. **Query Performance**: The free-text search primitive relies on WooCommerce's core WordPress search indexing, which may vary depending on the merchant's database configuration.
+
+> Note: the passwords in `docker-compose.yml` are local development defaults for a disposable test database, not real credentials.

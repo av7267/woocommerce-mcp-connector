@@ -34,9 +34,9 @@ All credentials are read from environment variables; no secrets are hard‑coded
 
 | Error | Agent‑friendly `code` | When it occurs |
 |-------|----------------------|----------------|
-| Authentication failure | `auth_failed` | HTTP 401/403
-| Resource not found | `not_found` | HTTP 404
-| Rate limit exceeded | `rate_limited` | HTTP 429 after all retries
+| Authentication failure | `auth_failed` | HTTP 401/403 |
+| Resource not found | `not_found` | HTTP 404 |
+| Rate limit exceeded | `rate_limited` | HTTP 429 after all retries |
 | Service unavailable | `unavailable` | Network timeout, connection error, or repeated 5xx responses |
 | Generic error | `woo_error` | Any other unexpected status code |
 
